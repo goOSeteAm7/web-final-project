@@ -1,0 +1,78 @@
+@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEZW1vIiwiZXhwIjoxNzQ3NTA3ODA5fQ._ysE-mTYItzju-QpuUXkIvu25DKZdtZmYeHfU-sj78Q
+
+### Регистрация нового пользователя
+POST http://localhost:8000/auth/register
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="username"
+
+Demo
+--MyBoundary
+Content-Disposition: form-data; name="email"
+
+demo@example.com
+--MyBoundary
+Content-Disposition: form-data; name="password"
+
+secret
+--MyBoundary
+Content-Disposition: form-data; name="avatar"; filename="avatar.png"
+Content-Type: image/png
+
+< ./avatar.png
+--MyBoundary--
+
+### Логин пользователя
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Demo",
+  "password": "secret"
+}
+
+### Получение профиля
+GET http://localhost:8000/users/me
+Authorization: Bearer {{access_token}}
+
+### Обновление аватарки
+PUT http://localhost:8000/users/me/avatar
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{access_token}}
+
+--MyBoundary
+Content-Disposition: form-data; name="avatar"; filename="new-avatar.png"
+Content-Type: image/png
+
+< ./new-avatar.png
+--MyBoundary--
+
+### Создание поста
+POST http://localhost:8000/posts/ HTTP/1.1
+Host: localhost:8000
+Authorization: Bearer {{access_token}}
+Content-Type: multipart/form-data; boundary=CCC
+
+--CCC
+Content-Disposition: form-data; name="title"
+
+Second Post
+--CCC
+Content-Disposition: form-data; name="image"; filename="img.png"
+Content-Type: image/png
+
+< ./img.png
+--CCC--
+
+
+### Получение всех постов
+GET http://localhost:8000/posts/
+
+### Получение постов пользователя
+GET http://localhost:8000/posts/my
+Authorization: Bearer {{access_token}}
+
+### Удаление своего поста
+DELETE http://localhost:8000/posts/2
+Authorization: Bearer {{access_token}}
